@@ -3,7 +3,7 @@ package laogao.layers
 import zio._
 import zio.console.{Console, putStrLn}
 
-object Layers extends zio.App {
+object Main extends zio.App {
   case class User(name: String)
   type Logging = Has[Logging.Service]
   object Logging {

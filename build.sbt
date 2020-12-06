@@ -8,10 +8,7 @@ val DoobieVersion     = "0.9.2"
 val ZIOVersion        = "1.0.3"
 val PureConfigVersion = "0.14.0"
 val ZIOInteropVersion = "2.2.0.1"
-
-PB.targets in Compile := Seq(
-  scalapb.gen() -> (sourceManaged in Compile).value / "scalapb"
-)
+val grpcVersion       = "1.31.1"
 
 lazy val doobie = (project in file("doobie"))
   .enablePlugins(JavaAppPackaging)
@@ -37,7 +34,8 @@ lazy val doobie = (project in file("doobie"))
       "com.github.pureconfig" %% "pureconfig" % PureConfigVersion,
       // log
       "org.slf4j" % "slf4j-log4j12" % "1.7.30"    
-    )
+    ),
+    run / fork := true
   )
 
 lazy val kafka = (project in file("kafka"))
@@ -57,5 +55,23 @@ lazy val layers = (project in file("layers"))
     name := "layers",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % ZIOVersion
+    )
+  )
+
+lazy val grpc = (project in file("grpc"))
+  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(ProtocPlugin)
+  .settings(
+    name := "grpc",
+    PB.targets in Compile := Seq(
+      scalapb.gen(grpc = true) -> (sourceManaged in Compile).value,
+      scalapb.zio_grpc.ZioCodeGenerator -> (sourceManaged in Compile).value
+    ),
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio-streams" % ZIOVersion,
+      "io.grpc" % "grpc-netty" % scalapb.compiler.Version.grpcJavaVersion,
+      "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
+      "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
+      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % "0.4.0"
     )
   )
