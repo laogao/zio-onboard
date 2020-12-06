@@ -39,3 +39,14 @@ lazy val doobie = (project in file("doobie"))
       "org.slf4j" % "slf4j-log4j12" % "1.7.30"    
     )
   )
+
+lazy val kafka = (project in file("kafka"))
+  .enablePlugins(JavaAppPackaging)
+  .settings(
+    name := "kafka",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio-streams" % "1.0.2",
+      "dev.zio" %% "zio-kafka" % "0.13.0",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.3"
+    )
+  )
