@@ -50,3 +50,12 @@ lazy val kafka = (project in file("kafka"))
       "com.fasterxml.jackson.core" % "jackson-databind" % "2.11.3"
     )
   )
+
+lazy val layers = (project in file("layers"))
+  .enablePlugins(JavaAppPackaging)
+  .settings(
+    name := "layers",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio" % ZIOVersion
+    )
+  )
