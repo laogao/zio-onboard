@@ -51,6 +51,7 @@ lazy val kafka = (project in file("kafka"))
 
 lazy val layers = (project in file("layers"))
   .enablePlugins(JavaAppPackaging)
+  .enablePlugins(DockerPlugin)
   .settings(
     name := "layers",
     libraryDependencies ++= Seq(
