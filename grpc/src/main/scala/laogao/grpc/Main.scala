@@ -19,10 +19,13 @@ object Main extends zio.App {
 
   def myAppLogic =
     for {
-      r1 <- GreeterClient.sayHello(HelloRequest("Jon"))
-      _ <- putStrLn(r1.message)
-      r2 <- GreeterClient.sayHelloTwice(HelloRequest("Jon"))
-      _ <- putStrLn(r2.message)
+      // TODO figure out how to add metadata in request (grpcurl works as such: grpcurl -plaintext -d '{"name": "jon"}' -H 'user-token: aegon' localhost:9000 laogao.grpc.Greeter/SayHello)
+      //r1 <- GreeterClient.sayHello(HelloRequest("Jon"))
+      //_ <- putStrLn(r1.message)
+      //r2 <- GreeterClient.sayHelloTwice(HelloRequest("Jon"))
+      //_ <- putStrLn(r2.message)
+      _ <- putStrLn("Greeter server should be running now. You can verify via grpcurl:")
+      _ <- putStrLn("$ grpcurl -plaintext -d '{\"name\": \"jon\"}' -H 'user-token: aegon' localhost:9000 laogao.grpc.Greeter/SayHello)")
       _ <- getStrLn
     } yield ()
 
