@@ -23,6 +23,7 @@ object Main extends zio.App {
       _ <- putStrLn(r1.message)
       r2 <- GreeterClient.sayHelloTwice(HelloRequest("Jon"))
       _ <- putStrLn(r2.message)
+      _ <- getStrLn
     } yield ()
 
   // by providing GreeterServer this way we don't have to manually (re)start it for quick demo
