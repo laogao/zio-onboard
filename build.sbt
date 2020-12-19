@@ -86,6 +86,8 @@ lazy val sttp = (project in file("sttp"))
       "dev.zio" %% "zio"         % ZIOVersion,
       "dev.zio" %% "zio-streams" % ZIOVersion,
       "com.softwaremill.sttp.client3" %% "core" % "3.0.0-RC13",
-      "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.0.0-RC13"
+      "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.0.0-RC13",
+      "com.softwaremill.sttp.client3" %% "circe" % "3.0.0-RC13",
+      "io.circe" %% "circe-generic" % "0.13.0"
     )
   )
