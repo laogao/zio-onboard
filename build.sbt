@@ -8,7 +8,8 @@ val DoobieVersion     = "0.9.2"
 val ZIOVersion        = "1.0.3"
 val PureConfigVersion = "0.14.0"
 val ZIOInteropVersion = "2.2.0.1"
-val grpcVersion       = "1.31.1"
+val grpcVersion       = "1.34.1"
+val zioGrpcVersion    = "0.4.2"
 
 lazy val doobie = (project in file("doobie"))
   .enablePlugins(JavaAppPackaging)
@@ -70,9 +71,9 @@ lazy val grpc = (project in file("grpc"))
     ),
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio-streams" % ZIOVersion,
-      "io.grpc" % "grpc-netty" % scalapb.compiler.Version.grpcJavaVersion,
+      "io.grpc" % "grpc-netty" % grpcVersion,
       "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
       "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
-      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % "0.4.0"
+      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion
     )
   )
