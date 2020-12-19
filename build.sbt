@@ -77,3 +77,15 @@ lazy val grpc = (project in file("grpc"))
       "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion
     )
   )
+
+lazy val sttp = (project in file("sttp"))
+  .enablePlugins(JavaAppPackaging)
+  .settings(
+    name := "sttp",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio"         % ZIOVersion,
+      "dev.zio" %% "zio-streams" % ZIOVersion,
+      "com.softwaremill.sttp.client3" %% "core" % "3.0.0-RC13",
+      "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.0.0-RC13"
+    )
+  )
