@@ -10,6 +10,8 @@ val PureConfigVersion = "0.14.0"
 val ZIOInteropVersion = "2.2.0.1"
 val grpcVersion       = "1.34.1"
 val zioGrpcVersion    = "0.4.2"
+val AkkaVersion       = "2.6.8"
+val AkkaHttpVersion   = "10.2.2"
 
 lazy val doobie = (project in file("doobie"))
   .enablePlugins(JavaAppPackaging)
@@ -89,5 +91,18 @@ lazy val sttp = (project in file("sttp"))
       "com.softwaremill.sttp.client3" %% "async-http-client-backend-zio" % "3.0.0-RC13",
       "com.softwaremill.sttp.client3" %% "circe" % "3.0.0-RC13",
       "io.circe" %% "circe-generic" % "0.13.0"
+    )
+  )
+
+lazy val http = (project in file("http"))
+  .enablePlugins(JavaAppPackaging)
+  .settings(
+    name := "http",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio"         % ZIOVersion,
+      "dev.zio" %% "zio-streams" % ZIOVersion,
+      "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
+      "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
+      "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
     )
   )
