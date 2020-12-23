@@ -96,13 +96,22 @@ lazy val sttp = (project in file("sttp"))
 
 lazy val http = (project in file("http"))
   .enablePlugins(JavaAppPackaging)
+  .enablePlugins(ProtocPlugin)
   .settings(
     name := "http",
+    PB.targets in Compile := Seq(
+      scalapb.gen(grpc = true) -> (sourceManaged in Compile).value,
+      scalapb.zio_grpc.ZioCodeGenerator -> (sourceManaged in Compile).value
+    ),
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio"         % ZIOVersion,
       "dev.zio" %% "zio-streams" % ZIOVersion,
       "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
       "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
-      "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
+      "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
+      "io.grpc" % "grpc-netty" % grpcVersion,
+      "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
+      "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
+      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion
     )
   )

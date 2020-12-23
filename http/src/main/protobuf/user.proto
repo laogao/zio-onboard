@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "laogao.grpc";
+option java_outer_classname = "HelloGRPC";
+option objc_class_prefix = "HL";
+
+package laogao.grpc;
+
+service DeviceRegistry {
+  rpc register (RegisterRequest) returns (RegisterReply) {}
+}
+
+message RegisterRequest {
+  string ua = 1;
+}
+
+message RegisterReply {
+  int32 status = 1;
+  string device = 2;
+}
+
+service UserLogin {
+  rpc wxLogin (WxLoginRequest) returns (WxLoginReply) {}
+  rpc me (MeRequest) returns (MeReply) {}
+  rpc validate (ValidateRequest) returns (ValidateReply) {}
+}
+
+message WxLoginRequest {
+  string device = 1;
+  int32 aid = 2;
+  string wxcode = 3;
+  string userinfo = 4;
+  string ephone = 5;
+}
+
+message WxLoginReply {
+  int32 status = 1;
+  string token = 2;
+}
+
+message MeRequest {
+  string device = 1;
+  string token = 2;
+}
+
+message MeReply {
+  int32 status = 1;
+  int64 uid = 2;
+  string nick = 3;
+}
+
+message ValidateRequest {
+  string device = 1;
+  string token = 2;
+}
+
+message ValidateReply {
+  int32 status = 1;
+  string device = 2;
+  int32 aid = 3;
+  int64 uid = 4;
+  int64 expire = 5;
+}
