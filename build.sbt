@@ -112,6 +112,7 @@ lazy val http = (project in file("http"))
       "io.grpc" % "grpc-netty" % grpcVersion,
       "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
       "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
-      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion
+      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion,
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.12.0"
     )
   )
