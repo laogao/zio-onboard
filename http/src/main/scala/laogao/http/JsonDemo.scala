@@ -29,22 +29,22 @@ object JsonDemo extends App {
   val json1 = """{"status":{"code":0,"desc":""},"result":{"_device":"123"}}"""
   val data1 = mapper.readValue(json1, classOf[DeviceResponse])
   println(data1)
-  println(mapper.writeValueAsString(json1))
+  println(mapper.writeValueAsString(data1))
 
   val json2 = """{"status":{"code":0,"desc":""},"result":{"_token":"789"}}"""
   val data2 = mapper.readValue(json2, classOf[LoginResponse])
   println(data2)
-  println(mapper.writeValueAsString(json2))
+  println(mapper.writeValueAsString(data2))
 
   val json3 = """{"status":{"code":0,"desc":""},"result":{"uid":50001,"nick":"laogao"}}"""
   val data3 = mapper.readValue(json3, classOf[MeResponse])
   println(data3)
-  println(mapper.writeValueAsString(json3))
+  println(mapper.writeValueAsString(data3))
 
   val json4 = """{"status":{"code":0,"desc":""}}"""
   val data4 = mapper.readValue(json4, classOf[MeResponse])
   println(data4)
-  println(mapper.writeValueAsString(json4))
+  println(mapper.writeValueAsString(data4))
 
   val route =
     path("api" / "device" / "register") {
