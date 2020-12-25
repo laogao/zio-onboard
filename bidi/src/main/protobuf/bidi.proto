@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "laogao.bidi";
+option java_outer_classname = "bidi";
+option objc_class_prefix = "LG";
+
+package laogao.bidi;
+
+service Pipe {
+  rpc Smoke (stream SmokeRequest) returns (stream SmokeResponse) {}
+}
+
+message SmokeRequest {
+  string message = 1;
+}
+
+message SmokeResponse {
+  string message = 1;
+}

@@ -116,3 +116,25 @@ lazy val http = (project in file("http"))
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.12.0"
     )
   )
+
+lazy val bidi = (project in file("bidi"))
+  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(ProtocPlugin)
+  .settings(
+    name := "bidi",
+    PB.targets in Compile := Seq(
+      scalapb.gen(grpc = true) -> (sourceManaged in Compile).value,
+      scalapb.zio_grpc.ZioCodeGenerator -> (sourceManaged in Compile).value
+    ),
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio" % ZIOVersion,
+      "dev.zio" %% "zio-streams" % ZIOVersion,
+      "dev.zio" %% "zio-kafka" % "0.13.0",
+      "com.fasterxml.jackson.core" % "jackson-databind" % "2.12.0",
+      "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
+      "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
+      "com.thesamet.scalapb.zio-grpc" %% "zio-grpc-core" % zioGrpcVersion,
+      "io.grpc" % "grpc-netty" % grpcVersion
+    )
+  )
+
