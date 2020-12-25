@@ -5,6 +5,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
@@ -25,6 +26,7 @@ object JsonDemo extends App {
   case class MeResponse(status: Status, result: MeResult)
 
   val mapper = JsonMapper.builder().addModule(DefaultScalaModule).build()
+  mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
   val json1 = """{"status":{"code":0,"desc":""},"result":{"_device":"123"}}"""
   val data1 = mapper.readValue(json1, classOf[DeviceResponse])
@@ -45,6 +47,10 @@ object JsonDemo extends App {
   val data4 = mapper.readValue(json4, classOf[MeResponse])
   println(data4)
   println(mapper.writeValueAsString(data4))
+
+  println(mapper.writeValueAsString(Map(0 -> Status(0,""), -100 -> Status(-100,"INVALID"))))
+  println(mapper.writeValueAsString(Map(0 -> List(1, 2, 3), -100 -> Status(-100,"INVALID"))))
+  println(mapper.readValue(s"""{"code": 0, "desc": "", "unknown": ""}""", classOf[Status]))
 
   val route =
     path("api" / "device" / "register") {
