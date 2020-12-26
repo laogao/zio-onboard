@@ -1,12 +1,12 @@
 package laogao.bidi
 
-import laogao.bidi.bidi.ZioBidi.ZPipe
 import laogao.bidi.bidi.ZioBidi.PipeClient
 import laogao.bidi.bidi.SmokeRequest
-import laogao.bidi.bidi.SmokeResponse
-import io.grpc.{ManagedChannelBuilder, Metadata}
+import io.grpc.ManagedChannelBuilder
+import zio._
 import zio.console._
-import scalapb.zio_grpc.{SafeMetadata, ZManagedChannel}
+import zio.stream.ZStream
+import scalapb.zio_grpc.ZManagedChannel
 
 object Main extends zio.App {
 
@@ -14,10 +14,12 @@ object Main extends zio.App {
   val clientManaged = PipeClient.managed(ZManagedChannel(channel))
 
   def myAppLogic = for {
-    _ <- putStrLn("Pipe server should be running now. You can verify via grpcurl.")
-    // TODO make call to server
-    _ <- putStrLn("Press any key to exit...")
-    _ <- getStrLn
+    _ <- putStrLn("Expect the server to pass down a new message every second. Type '\\q' in between to exit...")
+    _ <- clientManaged.use(
+      _.smoke(ZStream.repeatEffect(getStrLn.flatMap(line =>
+        if ("\\q".equals(line)) ZIO.fail(io.grpc.Status.UNKNOWN) else ZIO.succeed(SmokeRequest(line))
+      ).catchAll(_ => ZIO.fail(io.grpc.Status.UNKNOWN)))).foreach(resp => putStrLn(s"GOT: ${resp.message}"))
+    )
   } yield ()
 
   final def run(args: List[String]) =
