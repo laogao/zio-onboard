@@ -1,8 +1,7 @@
 package laogao.bidi
 
 import io.grpc.Status
-import zio.{Chunk, Has, IO, ZEnv, ZIO}
-import zio.console._
+import zio.{Schedule, ZEnv, ZIO}
 import laogao.bidi.bidi.ZioBidi.ZPipe
 import laogao.bidi.bidi.SmokeRequest
 import laogao.bidi.bidi.SmokeResponse
@@ -17,11 +16,11 @@ object PipeServer extends ServerMain {
     def smoke(request: zio.stream.Stream[Status, SmokeRequest]): ZStream[ZEnv, Status, SmokeResponse] = {
       ZStream.mergeAll(2)(
         request.flatMap(req => ZStream.fromEffect(ZIO.succeed(SmokeResponse(s"[ACK: ${req.message}]")))),
-        ZStream.repeatEffect(ZIO.succeed(SmokeResponse(s"${new java.util.Date()}")).delay(1.seconds))
+        ZStream.repeatEffectWith(ZIO.succeed(SmokeResponse(s"${new java.util.Date()}")), Schedule.spaced(1.seconds))
       )
     }
   }
 
-  def services: ServiceList[zio.ZEnv] = ServiceList.add(PipeServerImpl)
+  def services: ServiceList[ZEnv] = ServiceList.add(PipeServerImpl)
 
 }
