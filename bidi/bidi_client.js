@@ -34,9 +34,6 @@ function runSmoke(callback) {
   call.end();
 }
 
-/**
- * Run all of the demos in order
- */
 function main() {
   async.series([
     runSmoke
