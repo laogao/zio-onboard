@@ -41,3 +41,7 @@ metals.sbt
 
 #general
 *.class
+
+#node
+node_modules
+package-lock.json
