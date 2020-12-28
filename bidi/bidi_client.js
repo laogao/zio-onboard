@@ -23,12 +23,12 @@ var COORD_FACTOR = 1e7;
 function runSmoke(callback) {
   var call = client.smoke();
   call.on('data', function(res) {
-    console.log('Got message "' + res.message);
+    console.log('Got message: [' + res.message + ']');
   });
 
   call.on('end', callback);
 
-  for (var i = 0; i < 10000; i++) {
+  for (var i = 0; i < 100000; i++) {
     call.write({"message": "" + i});
   }
   call.end();
