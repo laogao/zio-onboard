@@ -25,6 +25,7 @@ object Main extends zio.App {
     _ <- putStrLn(r1.message)
     _ <- putStrLn("Greeter server should be running now. You can verify via grpcurl:")
     _ <- putStrLn("$ grpcurl -plaintext -d '{\"name\": \"jon\"}' -H 'user-token: aegon' localhost:9000 laogao.grpc.Greeter/SayHello")
+    _ <- putStrLn("Or on windows:\n> grpcurl -plaintext -d {\\\"name\\\":\\\"jon\\\"}' -H user-token:aegon localhost:9000 laogao.grpc.Greeter/SayHello")
     _ <- putStrLn("Press any key to exit...")
     _ <- getStrLn
   } yield ()
