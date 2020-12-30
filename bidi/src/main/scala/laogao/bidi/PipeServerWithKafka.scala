@@ -19,15 +19,16 @@ object PipeServerWithKafka extends ServerMain {
 
   object PipeServerImpl extends ZPipe[ZEnv, Any] {
     def smoke(request: zio.stream.Stream[Status, SmokeRequest]): ZStream[ZEnv, Status, SmokeResponse] = {
-      val consumerSettings: ConsumerSettings = ConsumerSettings(List("10.0.0.8:9092")).withGroupId("group")
-      val consumerManaged: ZManaged[Clock with Blocking, Throwable, Consumer.Service] = Consumer.make(consumerSettings)
-      val consumer: ZLayer[Clock with Blocking, Throwable, Consumer] =  ZLayer.fromManaged(consumerManaged)
-      val relay = request.filter("1" == _.message).flatMap(req =>
+      val relay = request.filter("1" == _.message).flatMap(req => {
+        val consumerSettings: ConsumerSettings = ConsumerSettings(List("10.0.0.8:9092")).withGroupId("group")
+        val consumerManaged: ZManaged[Clock with Blocking, Throwable, Consumer.Service] = Consumer.make(consumerSettings)
+        val consumer: ZLayer[Clock with Blocking, Throwable, Consumer] =  ZLayer.fromManaged(consumerManaged)
         Consumer.subscribeAnd(Subscription.topics("poc"))
-        .plainStream(Serde.string, Serde.string)
-        .provideCustomLayer(consumer)
-        .map(r => SmokeResponse(r.record.value))
-        .mapError(err => io.grpc.Status.UNKNOWN))
+          .plainStream(Serde.string, Serde.string)
+          .provideCustomLayer(consumer)
+          .map(r => SmokeResponse(r.record.value))
+          .mapError(err => io.grpc.Status.UNKNOWN)
+      })
       val ack = request.filter("2" == _.message).flatMap(req =>
         ZStream.fromEffect(ZIO.succeed(SmokeResponse(s"[ACK: ${req.message}]"))))
       ZStream.mergeAll(2)(relay, ack)
