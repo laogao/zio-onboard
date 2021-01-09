@@ -6,6 +6,7 @@ val Http4sVersion     = "0.21.8"
 val CirceVersion      = "0.13.0"
 val DoobieVersion     = "0.9.2"
 val ZIOVersion        = "1.0.3"
+val ZIOLoggingVersion = "0.5.4"
 val PureConfigVersion = "0.14.0"
 val ZIOInteropVersion = "2.2.0.1"
 val grpcVersion       = "1.34.1"
@@ -73,6 +74,7 @@ lazy val grpc = (project in file("grpc"))
     ),
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio-streams" % ZIOVersion,
+      "dev.zio" %% "zio-logging" % ZIOLoggingVersion,
       "io.grpc" % "grpc-netty" % grpcVersion,
       "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
       "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",
