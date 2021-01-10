@@ -140,3 +140,13 @@ lazy val bidi = (project in file("bidi"))
     )
   )
 
+lazy val etcd = (project in file("etcd"))
+  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(DockerPlugin)
+  .settings(
+    name := "etcd",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio" % ZIOVersion,
+      "io.etcd" % "jetcd-core" % "0.5.0"
+    )
+  )
