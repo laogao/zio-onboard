@@ -147,6 +147,7 @@ lazy val etcd = (project in file("etcd"))
     name := "etcd",
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % ZIOVersion,
-      "io.etcd" % "jetcd-core" % "0.5.0"
+      "io.etcd" % "jetcd-core" % "0.5.0",
+      "com.typesafe" % "config" % "1.4.1"
     )
   )
