@@ -18,20 +18,21 @@ var packageDefinition = protoLoader.loadSync(
 var bidi = grpc.loadPackageDefinition(packageDefinition).laogao.bidi;
 var client = new bidi.Pipe('localhost:9000', grpc.credentials.createInsecure());
 
-var COORD_FACTOR = 1e7;
+// var COORD_FACTOR = 1e7;
 
 function runSmoke(callback) {
-  var call = client.smoke();
+  let call = client.smoke();
   call.on('data', function(res) {
     console.log('Got message: [' + res.message + ']');
   });
-
   call.on('end', callback);
-
-  for (var i = 0; i < 100000; i++) {
-    call.write({"message": "" + i});
-  }
-  call.end();
+  // for (var i = 0; i < 100000; i++) {
+  //   call.write({"message": "" + i});
+  // }
+  // call.end();
+  setInterval(() => {
+    call.write({"message": "recurring every 5 seconds"});
+  }, 5000)
 }
 
 function main() {
