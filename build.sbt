@@ -75,6 +75,8 @@ lazy val grpc = (project in file("grpc"))
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio-streams" % ZIOVersion,
       "dev.zio" %% "zio-logging" % ZIOLoggingVersion,
+      "com.github.mlangc" %% "slf4zio" % "1.0.0",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
       "io.grpc" % "grpc-netty" % grpcVersion,
       "com.thesamet.scalapb" %% "scalapb-runtime-grpc" % scalapb.compiler.Version.scalapbVersion,
       "com.thesamet.scalapb" %% "scalapb-json4s" % "0.10.1",

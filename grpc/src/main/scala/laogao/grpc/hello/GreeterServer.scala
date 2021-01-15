@@ -1,21 +1,24 @@
 package laogao.grpc.hello
 
+import com.github.mlangc.slf4zio.api.LoggingSupport
 import io.grpc.Status
 import zio.{Has, IO, ZEnv, ZIO}
-import zio.console._
 import laogao.grpc.hello.ZioHello.ZGreeter
 import scalapb.zio_grpc.RequestContext
+import com.github.mlangc.slf4zio.api._
 
 case class User(id: Long, name: String)
 
-object GreeterImpl extends ZGreeter[ZEnv, Has[User]] {
-  def sayHello(request: HelloRequest): ZIO[zio.ZEnv with Has[User], Status, HelloReply] = for {
-    _ <- putStrLn(s"Got request: $request")
-    user <- ZIO.service[User]
-  } yield HelloReply(s"Hello, ${if (user.id > 0) user.name else request.name}!")
+object GreeterImpl extends ZGreeter[ZEnv, Has[User]] with LoggingSupport {
+
+  def sayHello(request: HelloRequest): ZIO[zio.ZEnv with Has[User], Status, HelloReply] =
+    for {
+      _ <- logger.infoIO(s"Got request: $request")
+      user <- ZIO.service[User]
+    } yield HelloReply(s"Hello, ${if (user.id > 0) user.name else request.name}!")
 
   def sayHelloTwice(request: HelloRequest): ZIO[zio.ZEnv with Has[User], Status, HelloReply] = for {
-    _ <- putStrLn(s"Got request: $request")
+    _ <- logger.infoIO(s"Got request: $request")
     user <- ZIO.service[User]
   } yield HelloReply(s"Hello, and hello, ${if (user.id > 0) user.name else request.name}!!")
 

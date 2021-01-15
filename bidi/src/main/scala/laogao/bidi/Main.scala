@@ -16,7 +16,7 @@ object Main extends zio.App {
   def myAppLogic = for {
     _ <- putStrLn("Expect the server to pass down a new message every second. Type '\\q' in between to exit...")
     _ <- clientManaged.use(
-      _.smoke(ZStream.repeatEffect(getStrLn.flatMap(line =>
+      _.withTimeoutMillis(200).smoke(ZStream.repeatEffect(getStrLn.flatMap(line =>
         if ("\\q".equals(line)) ZIO.fail(io.grpc.Status.UNKNOWN) else ZIO.succeed(SmokeRequest(line))
       ).catchAll(_ => ZIO.fail(io.grpc.Status.UNKNOWN)))).foreach(resp => putStrLn(s"GOT: ${resp.message}"))
     )
