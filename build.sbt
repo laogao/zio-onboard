@@ -153,3 +153,17 @@ lazy val etcd = (project in file("etcd"))
       "com.typesafe" % "config" % "1.4.1"
     )
   )
+
+lazy val misc = (project in file("misc"))
+  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(DockerPlugin)
+  .settings(
+    name := "misc",
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio" % ZIOVersion,
+      "com.typesafe" % "config" % "1.4.1",
+      "com.github.mlangc" %% "slf4zio" % "1.0.0",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "redis.clients" % "jedis" % "3.5.0"
+    )
+  )
