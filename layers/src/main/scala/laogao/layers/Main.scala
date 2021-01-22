@@ -1,7 +1,7 @@
 package laogao.layers
 
 import zio._
-import zio.console.{Console, putStrLn}
+import zio.console.{Console, getStrLn, putStrLn}
 
 object Main extends zio.App {
   case class User(name: String)
@@ -35,9 +35,8 @@ object Main extends zio.App {
     def greetWithLogging(user: User): ZIO[Greeter with Logging, Nothing, Unit] =
         ZIO.accessM[Logging](_.get.log(s"rec'd user info $user")) *> ZIO.accessM[Greeter](_.get.greet(user))
   }
-  val program = Greeter.greetWithLogging(User("Jon"))
-  val dependencies = Console.live >>> Greeter.viaConsole ++ Logging.viaConsole
-  val dependenciesCompact = Greeter.viaConsole ++ Logging.viaConsole // since we're using exitCode, Console is optional
-  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = program.provideLayer(dependenciesCompact).exitCode
+  val program = Greeter.greetWithLogging(User("Jon")) *> getStrLn
+  val dependencies = Console.live >+> Greeter.viaConsole ++ Logging.viaConsole
+  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = program.provideLayer(dependencies).exitCode
 
 }
